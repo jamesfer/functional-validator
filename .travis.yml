@@ -1,0 +1,19 @@
+language: node_js
+node_js: "8"
+cache: yarn
+notifications:
+  email: false
+
+script:
+  - yarn validate
+#after_success:
+#  - yarn --silent nyc report --reporter=text-lcov | sed "s|/app|$(pwd)|" | ./node_modules/.bin/coveralls
+#  # Rebuild docs, only on master branch and not on pull requests
+#  - '[[ $TRAVIS_PULL_REQUEST = "false" && $TRAVIS_BRANCH = "master" ]] && yarn docs'
+#
+#deploy:
+#  provider: script
+#  skip_cleanup: true
+#  script: yarn semantic-release
+#  on:
+#    branch: master

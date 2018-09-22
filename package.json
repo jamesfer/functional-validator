@@ -1,0 +1,48 @@
+{
+  "name": "functional-validator",
+  "version": "0.1.0",
+  "description": "Simple, adaptable, type-safe validator",
+  "main": "dist/index.js",
+  "module": "dist/es6/index.js",
+  "sideEffects": false,
+  "author": "James Ferguson",
+  "license": "MIT",
+  "scripts": {
+    "lint": "tslint --project tsconfig.json",
+    "test": "jest src/**",
+    "test:integration": "jest tests/**",
+    "build": "yarn -s build:esm5 && yarn -s build:es2015",
+    "build:esm5": "tsc --project tsconfig.build.json",
+    "build:es2015": "tsc --project tsconfig.build.json --outDir ./dist/es6 --target es2015",
+    "validate": "yarn lint && yarn test && yarn build && yarn test:integration"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "skipBabel": true
+      }
+    },
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testRegex": "(/tests/.*|/src/.+\\.spec\\.ts)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ]
+  },
+  "dependencies": {
+    "lodash": "^4.17.5",
+    "tslib": "^1.8.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.2",
+    "@types/lodash": "^4.14.107",
+    "jest": "^23.6.0",
+    "ts-jest": "^22.4.6",
+    "ts-node": "^6.0.1",
+    "tslint": "^5.9.1",
+    "tslint-config-airbnb": "^5.8.0",
+    "typescript": "^2.8.3"
+  }
+}

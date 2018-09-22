@@ -1,0 +1,15 @@
+# Generated node files
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Build files
+dist
+coverage
+.nyc_output
+
+# IDEs
+.idea
+.vscode

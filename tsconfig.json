@@ -3,7 +3,7 @@
     "strict": true,
     "declaration": true,
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "./dist/typings",
     "target": "es5",
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,

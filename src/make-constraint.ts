@@ -1,4 +1,4 @@
-import { isFunction } from 'lodash';
+import isFunction from 'lodash-es/isFunction';
 
 /**
  * A rule message function is a way to create dynamic messages based on the user's input.

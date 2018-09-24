@@ -4,7 +4,7 @@ import {
   Constraint,
   ConstraintOptions,
 } from '../make-constraint';
-import { isArrayLike } from 'lodash';
+import isArrayLike from 'lodash-es/isArrayLike';
 
 
 const isArrayConstraint: Constraint = value => value == null || Array.isArray(value);

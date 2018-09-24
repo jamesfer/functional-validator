@@ -1,6 +1,6 @@
 import { ObjectMessageMap, ObjectValidatorMap, runConstraints } from '../validate';
 import { ConstraintOptions } from '../make-constraint';
-import { Dictionary } from 'lodash';
+import { Dictionary } from '../type-assertions';
 
 function runPropertyConstraints<T extends ObjectValidatorMap<any>>(
   resultMap: ObjectMessageMap<T>,

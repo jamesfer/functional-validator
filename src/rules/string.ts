@@ -1,5 +1,5 @@
 import { Constraint, makeConstraint, RuleMessage, ConstraintOptions } from '../make-constraint';
-import { isString } from 'lodash';
+import isString from 'lodash-es/isString';
 
 const stringConstraint: Constraint = value => value == null || isString(value);
 export function string(message: RuleMessage = 'Value must be a string') {

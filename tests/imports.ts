@@ -1,4 +1,4 @@
-import { mapValues, isFunction, isObjectLike, omit } from 'lodash';
+import { mapValues, isFunction, isObjectLike, omit } from 'lodash-es';
 import * as rules from '../src/rules';
 import * as groups from '../src/groups';
 /* tslint:disable-next-line import-name */

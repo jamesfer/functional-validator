@@ -3,7 +3,12 @@ import { ConstraintOptions, InternalConstraint, makeConstraint } from './make-co
 const params = { setting: true };
 const message = 'Default error message';
 const fakeValue = 'value';
-const fakeOptions: ConstraintOptions = { name: 'name' };
+const fakeOptions: ConstraintOptions = {
+  key: 'name',
+  keyPath: ['name'],
+  parent: {},
+  root: {},
+};
 
 /**
  * Runs an internal constraint with fake data.

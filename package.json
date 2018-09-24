@@ -20,6 +20,11 @@
     "build:esm2015": "rollup --config --environment module:esm,target:es2015",
     "validate": "yarn lint && yarn test && yarn build"
   },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
   "release": {
     "verifyConditions": [
       "@semantic-release/changelog",
@@ -68,6 +73,7 @@
   "devDependencies": {
     "@types/jest": "^23.3.2",
     "@types/lodash-es": "^4.17.1",
+    "commitizen": "^2.10.1",
     "jest": "^23.6.0",
     "rollup": "^0.66.2",
     "rollup-plugin-commonjs": "^9.1.8",

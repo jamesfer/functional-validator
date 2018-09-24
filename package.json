@@ -2,8 +2,8 @@
   "name": "functional-validator",
   "version": "0.1.0",
   "description": "Simple, adaptable, type-safe validator",
-  "main": "dist/index-externals.js",
-  "module": "dist/es6/index.js",
+  "main": "dist/cjs5.js",
+  "module": "dist/esm5",
   "typings": "dist/typings/index.d.ts",
   "sideEffects": false,
   "author": "James Ferguson",
@@ -11,14 +11,14 @@
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "test": "jest src/**",
-    "test:integration": "jest tests/**",
-    "build": "yarn build:declaration && yarn build:umd && yarn build:cjs && yarn build:esm5 && yarn build:esm2015",
+    "build": "yarn build:declaration && yarn build:umd && yarn build:cjs5 && yarn build:cjs2015 && yarn build:esm5 && yarn build:esm2015",
     "build:declaration": "tsc --project tsconfig.build.json --emitDeclarationOnly",
-    "build:umd": "rollup --config --environment module:umd,target:es5",
-    "build:cjs": "rollup --config --environment module:cjs,target:es5",
+    "build:umd": "rollup --config --environment module:umd,target:es5,name:umd",
+    "build:cjs5": "rollup --config --environment module:cjs,target:es5",
+    "build:cjs2015": "rollup --config --environment module:cjs,target:es2015",
     "build:esm5": "rollup --config --environment module:esm,target:es5",
     "build:esm2015": "rollup --config --environment module:esm,target:es2015",
-    "validate": "yarn lint && yarn test && yarn build && yarn test:integration"
+    "validate": "yarn lint && yarn test && yarn build"
   },
   "jest": {
     "globals": {

@@ -4,16 +4,23 @@ cache: yarn
 notifications:
   email: false
 
+env:
+  global:
+    # NPM_TOKEN
+    - secure: "x4z5pojgCL6XRt1YQ8VwOs6Hfj4MUoUveduOxvyzeG10zqiArSviDmdgGOztZgZ0iZAA5xXX+2pIdladCd6Z8FIQ/MgkQyyUjoyO6F15fkSjkOqHCE8bRWzIR2LmjUfcY3xG5TOIYhaUovuGj0KuhrOc9Yk9oELDBe82GXCENUDKPTu8B46r5Db2qS7EXr7UDJTEZCEOpOcHRdhH2XBbbTLVZzdz4Z55nUPnMLjM/pfCMcoky1s0mo8gtQumYXaFfTzWmGVEkaSOK9xRhyTwDSMJtelh/T3UoZBm9YiAUXqq6q/2XODWhz2Y94zkfEqKX5bvfWVkgw+0AAA6A6laHAtoXXCGFvs6slpbuUQ6yxfV+rQko5d7JPKFtGxNdjWS5KumL7zSyy/ZH3fsGvRPmHLLG2zg8rrKMctHvzUCkzrN1qZzYClhKC80v/1lwnwagIesakfaRegUxeAkUH5VgGQePLE0mCd2Yg64rJQIFPxOzNqFavo+lMrMUvQQ9wqNIpWCbmDEdrLt+VqS1tHWBTycXUq5fnORmoxlZOatE2TEs1vBGXdXYxeoSsmzt5i9Jw4GVMF43mEABHYeDVpJ2rgDC46P1D/xIqTgm+ROEaRLzhoq/MQVasIlSEKyYCME31TkItyKwOqgiT2VL03bEDni/q55jVgA9bUHV+mSjdk="
+    # GH_TOKEN
+    - secure: "WbTu/Vh5L/mPPwMrWL2Fy2RVcJJ4rOEmVeJSacIP+FXTRvvO2ErCftQW3coPn/i/Em7oJ4E6jY8gSqN2eYoAETwkntrQBhzvQa9ZihNejzOorG2sx5pv6IiDSOus857YMl3k+DJWVS/Qcw2GsXTIvKazCUkFYVvkIZEdYea4HKeHTu1BJ0qN4uKa3nMkQagFWdl5/bTC98qVLCoUFLWdS4EIx11+gQqKvogq38pFrH5wk8+pyQyLtYEcs4c8yb0mGAzUvSiMLocjTjiYfgyKNbv/qc1U6omLkELa48nySsTqwjJPhwECtLBDxjJG9nNaYtwA9CN4936yGxsr7bJ7xQRgmKXWGG3Xa7BO/5SyN+uRmdPtJUJYcMowWyBV7nF/Hff5doZ5IL+rTXVatwJ1Xr52/IQ7N/PQdn8WcgpcZXhRCwE05bIjGqztp1+Mc1n+MNXN3GG6bVYx56qtaDsl4rpD3m1QG1XRFKXhPcrtQ0hXxU+fTMUKVW6Z/EfalgtzZ+TvqY/2tWEU8R7FPH/nRQoxx9FiATrc1z3GlBV+dyC9lgH3wU9ahTxkVqtksqGhKzH4/ZGgLyRLbbiD0l4sD89LB3RpF81ivw51tB8yLSU/S4jTWyMU25ns1JEygsS/ncedQIUTEsGKT2Whc9BZSqNudXuBKLspprOYYySj6FA="
+
 script:
   - yarn validate
 #after_success:
 #  - yarn --silent nyc report --reporter=text-lcov | sed "s|/app|$(pwd)|" | ./node_modules/.bin/coveralls
 #  # Rebuild docs, only on master branch and not on pull requests
 #  - '[[ $TRAVIS_PULL_REQUEST = "false" && $TRAVIS_BRANCH = "master" ]] && yarn docs'
-#
-#deploy:
-#  provider: script
-#  skip_cleanup: true
-#  script: yarn semantic-release
-#  on:
-#    branch: master
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: yarn semantic-release
+  on:
+    branch: master

@@ -5,6 +5,7 @@
   "author": "James Ferguson",
   "license": "MIT",
   "main": "dist/umd.js",
+  "browser": "dist/umd.min.js",
   "module": "dist/esm5.js",
   "typings": "dist/typings/index.d.ts",
   "sideEffects": false,

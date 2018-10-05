@@ -7,13 +7,14 @@
   "main": "dist/umd.js",
   "browser": "dist/umd.min.js",
   "module": "dist/esm5.js",
+  "es2015": "dist/esm2015.js",
   "typings": "dist/typings/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "test": "jest",
     "build": "yarn build:declaration && yarn build:rollup",
-    "build:declaration": "tsc --project tsconfig.build.json --emitDeclarationOnly",
+    "build:declaration": "tsc --project tsconfig.build.json --outDir dist/typings --declaration --emitDeclarationOnly",
     "build:rollup": "rollup --config",
     "validate": "yarn lint && yarn test && yarn build"
   },
@@ -45,6 +46,11 @@
       }
     ]
   },
+  "babel": {
+    "plugins": [
+      "lodash"
+    ]
+  },
   "jest": {
     "globals": {
       "ts-jest": {
@@ -68,13 +74,18 @@
     "tslib": "^1.8.3"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
     "@semantic-release/changelog": "^3.0.0",
     "@semantic-release/git": "^7.0.4",
     "@types/jest": "^23.3.2",
     "@types/lodash-es": "^4.17.1",
+    "babel-plugin-lodash": "^3.3.4",
     "commitizen": "^2.10.1",
     "jest": "^23.6.0",
     "rollup": "^0.66.2",
+    "rollup-plugin-analyzer": "^2.1.0",
+    "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.1.8",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-typescript": "^1.0.0",

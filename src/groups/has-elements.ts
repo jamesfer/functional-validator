@@ -1,6 +1,6 @@
 import { InternalConstraint, GroupConstraint, ConstraintOptions } from '../make-constraint';
 import { runConstraints } from '../validate';
-import isArrayLike from 'lodash-es/isArrayLike';
+import { isArrayLike } from 'lodash-es';
 
 export function hasElements<T = string[]>(
   constraints: InternalConstraint[] | GroupConstraint<T>,

@@ -4,8 +4,7 @@ import {
   RuleMessage,
   makeConstraint,
 } from '../make-constraint';
-import isNumber from 'lodash-es/isNumber';
-import isInteger from 'lodash-es/isInteger';
+import { isNumber, isInteger } from 'lodash-es';
 
 const numberConstraint: Constraint = value => value == null || isNumber(value);
 export function number(message: RuleMessage = 'Value must be a number') {

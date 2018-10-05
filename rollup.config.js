@@ -3,15 +3,22 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import path from 'path';
 
-const module = process.env.module || 'esm';
-const target = process.env.target || 'es2015';
-const name = process.env.name || `${module}${target.replace(/^es/, '')}`;
 const dependencies = Object.keys(require('./package.json').dependencies);
+const configurations = [
+  { module: 'umd', target: 'es5' },
+  { module: 'umd', target: 'es5' },
+  { module: 'esm', target: 'es5' },
+  { module: 'esm', target: 'es2015' },
+];
 
-export default {
+function name(module, target) {
+  return module === 'umd' ? 'umd.js' : `${module}${target.replace(/^es/, '')}.js`;
+}
+
+export default configurations.map(({ module, target }) => ({
   input: path.resolve(__dirname, 'src', 'index.ts'),
   output: {
-    file: path.resolve(__dirname, 'dist', `${name}.js`),
+    file: path.resolve(__dirname, 'dist', name(module, target)),
     format: module,
     sourcemap: true,
     // Name of global variable when using with a script tag
@@ -35,4 +42,4 @@ export default {
     // Assume all dependencies don't have side effects
     pureExternalModules: true,
   },
-};
+}));

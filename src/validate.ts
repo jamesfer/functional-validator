@@ -38,7 +38,6 @@ export function runConstraints<T = string[]>(
   return constraints(value, options);
 }
 
-
 /* tslint:disable:max-line-length */
 export function validate<T>(value: any, constraintGroup: GroupConstraint<T>, options?: ValidateOptions): ValidationResult<T>;
 export function validate<T = string[]>(value: any, constraints: InternalConstraint[], options?: ValidateOptions): ValidationResult<T>;

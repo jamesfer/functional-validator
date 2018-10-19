@@ -37,7 +37,7 @@ describe('hasElements', () => {
     const parent = ['a', 'b', 'c'];
     validate(parent, hasElements([constraint]));
     parent.forEach((value, index) => {
-      const options = expect.objectContaining({ key: index + '' });
+      const options = expect.objectContaining({ key: `${index}` });
       expect(constraint).nthCalledWith(index + 1, value, options);
     });
   });
@@ -47,7 +47,7 @@ describe('hasElements', () => {
     const parent = ['a', 'b', 'c'];
     validate(parent, hasElements([constraint]));
     parent.forEach((value, index) => {
-      const options = expect.objectContaining({ keyPath: [index + ''] });
+      const options = expect.objectContaining({ keyPath: [`${index}`] });
       expect(constraint).nthCalledWith(index + 1, value, options);
     });
   });
@@ -60,7 +60,7 @@ describe('hasElements', () => {
     parent.forEach((_, parentIndex) => {
       child.forEach((value, childIndex) => {
         const index = parentIndex * child.length + childIndex;
-        const options = expect.objectContaining({ keyPath: [parentIndex + '', childIndex + ''] });
+        const options = expect.objectContaining({ keyPath: [`${parentIndex}`, `${childIndex}`] });
         expect(constraint).nthCalledWith(index + 1, value, options);
       });
     });

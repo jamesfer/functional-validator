@@ -55,7 +55,6 @@ export function lessThan(maximum: number, message: RuleMessage<LessThanParams> =
   return makeConstraint({ message, constraint: lessThanConstraint, params: { maximum } });
 }
 
-
 export type LessEqualToParams = { maximum: number };
 const lessEqualToMessage: RuleMessage<LessEqualToParams>
   = (value, options, { maximum }) => `Value must be less than or equal to ${maximum}`;

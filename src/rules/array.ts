@@ -4,8 +4,7 @@ import {
   Constraint,
   ConstraintOptions,
 } from '../make-constraint';
-import isArrayLike from 'lodash-es/isArrayLike';
-
+import { isArrayLike } from 'lodash-es';
 
 const isArrayConstraint: Constraint = value => value == null || Array.isArray(value);
 export function array(message: RuleMessage = 'Value must be an array') {

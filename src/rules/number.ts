@@ -4,8 +4,7 @@ import {
   RuleMessage,
   makeConstraint,
 } from '../make-constraint';
-import isNumber from 'lodash-es/isNumber';
-import isInteger from 'lodash-es/isInteger';
+import { isNumber, isInteger } from 'lodash-es';
 
 const numberConstraint: Constraint = value => value == null || isNumber(value);
 export function number(message: RuleMessage = 'Value must be a number') {
@@ -55,7 +54,6 @@ const lessThanConstraint: Constraint<LessThanParams>
 export function lessThan(maximum: number, message: RuleMessage<LessThanParams> = lessThanMessage) {
   return makeConstraint({ message, constraint: lessThanConstraint, params: { maximum } });
 }
-
 
 export type LessEqualToParams = { maximum: number };
 const lessEqualToMessage: RuleMessage<LessEqualToParams>

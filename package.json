@@ -2,22 +2,20 @@
   "name": "functional-validator",
   "version": "1.0.0",
   "description": "Simple, adaptable, type-safe validator",
-  "main": "dist/cjs5.js",
-  "module": "dist/esm5",
-  "typings": "dist/typings/index.d.ts",
-  "sideEffects": false,
   "author": "James Ferguson",
   "license": "MIT",
+  "main": "dist/umd.js",
+  "browser": "dist/umd.min.js",
+  "module": "dist/esm5.js",
+  "es2015": "dist/esm2015.js",
+  "typings": "dist/typings/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "test": "jest",
-    "build": "yarn build:declaration && yarn build:umd && yarn build:cjs5 && yarn build:cjs2015 && yarn build:esm5 && yarn build:esm2015",
-    "build:declaration": "tsc --project tsconfig.build.json --emitDeclarationOnly",
-    "build:umd": "rollup --config --environment module:umd,target:es5,name:umd",
-    "build:cjs5": "rollup --config --environment module:cjs,target:es5",
-    "build:cjs2015": "rollup --config --environment module:cjs,target:es2015",
-    "build:esm5": "rollup --config --environment module:esm,target:es5",
-    "build:esm2015": "rollup --config --environment module:esm,target:es2015",
+    "build": "yarn build:declaration && yarn build:rollup",
+    "build:declaration": "tsc --project tsconfig.build.json --outDir dist/typings --declaration --emitDeclarationOnly",
+    "build:rollup": "rollup --config",
     "validate": "yarn lint && yarn test && yarn build"
   },
   "config": {
@@ -48,22 +46,28 @@
       }
     ]
   },
+  "babel": {
+    "plugins": [
+      "lodash"
+    ]
+  },
   "jest": {
     "globals": {
       "ts-jest": {
-        "skipBabel": true
+        "tsConfig": "tsconfig.jest.json"
       }
     },
-    "transform": {
-      "^.+\\.(ts|js)$": "ts-jest"
-    },
-    "transformIgnorePatterns": [
-      "node_modules/(?!lodash-es).*"
-    ],
-    "testRegex": "(/tests/.*|/src/.+\\.spec\\.ts)$",
     "moduleFileExtensions": [
       "ts",
       "js"
+    ],
+    "testEnvironment": "node",
+    "testRegex": "(/tests/.*|/src/.+\\.spec\\.ts)$",
+    "transform": {
+      "^.+\\.[tj]s?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!lodash-es/)"
     ]
   },
   "dependencies": {
@@ -71,19 +75,24 @@
     "tslib": "^1.8.3"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
     "@semantic-release/changelog": "^3.0.0",
     "@semantic-release/git": "^7.0.4",
     "@types/jest": "^23.3.2",
     "@types/lodash-es": "^4.17.1",
+    "babel-plugin-lodash": "^3.3.4",
     "commitizen": "^2.10.1",
     "jest": "^23.6.0",
     "rollup": "^0.66.2",
+    "rollup-plugin-analyzer": "^2.1.0",
+    "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.1.8",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-typescript": "^1.0.0",
     "rollup-plugin-uglify": "^6.0.0",
     "semantic-release": "^15.9.16",
-    "ts-jest": "^22.4.6",
+    "ts-jest": "^23.10.4",
     "ts-node": "^6.0.1",
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.8.0",

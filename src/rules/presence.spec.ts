@@ -1,7 +1,6 @@
 import { defined, notNull, required } from './presence';
 import { validate } from '../validate';
 
-
 describe('required', () => {
   const test = (value: any) => validate(value, [required()]).passed();
 

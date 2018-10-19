@@ -2,7 +2,7 @@ import { validate } from '../validate';
 import { hasProperties } from './has-properties';
 import { greaterThan, required, string } from '../rules';
 import { assertType, Dictionary, returns } from '../type-assertions';
-import mapValues from 'lodash-es/mapValues';
+import { mapValues } from 'lodash-es';
 
 describe('object', () => {
   const requiredString = [required(), string()];

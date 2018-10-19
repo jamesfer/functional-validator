@@ -1,6 +1,6 @@
 import { InternalConstraint, GroupConstraint, ConstraintOptions } from '../make-constraint';
 import { runConstraints } from '../validate';
-import isArrayLike from 'lodash-es/isArrayLike';
+import { isArrayLike } from 'lodash-es';
 
 export function hasElements<T = string[]>(
   constraints: InternalConstraint[] | GroupConstraint<T>,
@@ -14,7 +14,7 @@ export function hasElements<T = string[]>(
       // Need to use a normal for loop to support all array like objects
       const messages: (T | undefined)[] = Array(value.length);
       for (let i = 0; i < messages.length; i += 1) {
-        const key = i + '';
+        const key = `${i}`;
         messages[i] = runConstraints(value[i], constraints, {
           ...childOptions,
           key,

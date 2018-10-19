@@ -1,9 +1,5 @@
 import { ValidationResultMessages } from './validate';
-import isArray from 'lodash-es/isArray';
-import isEmpty from 'lodash-es/isEmpty';
-import flatMapDeep from 'lodash-es/flatMapDeep';
-import isString from 'lodash-es/isString';
-
+import { isArray, isEmpty, flatMapDeep, isString } from 'lodash-es';
 
 function firstMessage(errors?: ValidationResultMessages<any>): string | undefined {
   if (errors === undefined) {
@@ -26,7 +22,6 @@ function firstMessage(errors?: ValidationResultMessages<any>): string | undefine
 
   return firstMessage(error);
 }
-
 
 function allMessages(errors?: ValidationResultMessages<any>): string[] {
   if (errors === undefined) {

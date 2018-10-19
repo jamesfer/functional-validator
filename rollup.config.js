@@ -1,38 +1,44 @@
+import path from 'path';
 import typescript from 'rollup-plugin-typescript';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-import path from 'path';
+import babel from 'rollup-plugin-babel'
+import { uglify } from 'rollup-plugin-uglify';
+import { plugin as analyze } from 'rollup-plugin-analyzer';
 
-const module = process.env.module || 'esm';
-const target = process.env.target || 'es2015';
-const name = process.env.name || `${module}${target.replace(/^es/, '')}`;
-const dependencies = Object.keys(require('./package.json').dependencies);
+const configurations = [
+  { target: 'es2015', format: 'esm', minify: false },
+  { target: 'es5', format: 'esm', minify: false },
+  { target: 'es5', format: 'umd', minify: false },
+  { target: 'es5', format: 'umd', minify: true },
+];
 
-export default {
-  input: path.resolve(__dirname, 'src', 'index.ts'),
-  output: {
-    file: path.resolve(__dirname, 'dist', `${name}.js`),
-    format: module,
-    sourcemap: true,
-    // Name of global variable when using with a script tag
-    name: 'fv',
-    // Skip default export when not using esm
-    exports: module === 'esm' ? 'auto' : 'named',
-    // Skip emitting interop helper function
-    interop: false,
-  },
-  plugins: [
-    resolve(),
-    commonjs(),
-    typescript({
-      target,
-      tsconfig: 'tsconfig.build.json',
-    }),
-  ],
-  // Mark dependencies as external when not making a umd bundle
-  external: module === 'umd' ? [] : id => dependencies.includes(id) || /\/lodash-es\//.test(id),
-  treeshake: {
-    // Assume all dependencies don't have side effects
-    pureExternalModules: true,
-  },
-};
+export default configurations.map(({ target, format, minify }) => {
+  const name = `${format}${target.replace('es', '')}.${minify ? 'min.' : ''}js`;
+  return {
+    input: path.resolve(__dirname, 'src', 'index.ts'),
+    output: {
+      format,
+      file: path.resolve(__dirname, 'dist', name),
+      sourcemap: true,
+      // Name of global variable when using with a script tag
+      name: 'fv',
+      // Skip default export when not using esm
+      exports: 'named',
+      // Skip emitting interop helper function
+      interop: false,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      typescript({ target, tsconfig: 'tsconfig.build.json' }),
+      babel({ extensions: ['.ts'] }),
+    ].concat(
+      minify ? uglify() : [],
+    ),
+    treeshake: {
+      // Assume all dependencies don't have side effects
+      pureExternalModules: true,
+    },
+  };
+});

@@ -54,19 +54,20 @@
   "jest": {
     "globals": {
       "ts-jest": {
-        "skipBabel": true
+        "tsConfig": "tsconfig.jest.json"
       }
     },
-    "transform": {
-      "^.+\\.(ts|js)$": "ts-jest"
-    },
-    "transformIgnorePatterns": [
-      "node_modules/(?!lodash-es).*"
-    ],
-    "testRegex": "(/tests/.*|/src/.+\\.spec\\.ts)$",
     "moduleFileExtensions": [
       "ts",
       "js"
+    ],
+    "testEnvironment": "node",
+    "testRegex": "(/tests/.*|/src/.+\\.spec\\.ts)$",
+    "transform": {
+      "^.+\\.[tj]s?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!lodash-es/)"
     ]
   },
   "dependencies": {
@@ -91,7 +92,7 @@
     "rollup-plugin-typescript": "^1.0.0",
     "rollup-plugin-uglify": "^6.0.0",
     "semantic-release": "^15.9.16",
-    "ts-jest": "^22.4.6",
+    "ts-jest": "^23.10.4",
     "ts-node": "^6.0.1",
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.8.0",

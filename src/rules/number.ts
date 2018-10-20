@@ -16,7 +16,6 @@ export function integer(message: RuleMessage = 'Value must be an integer') {
   return makeConstraint({ message, constraint: integerConstraint });
 }
 
-
 const finiteConstraint: Constraint = value => value == null || isFinite(value);
 export function finite(message: RuleMessage = 'Value must be a finite number') {
   return makeConstraint({ message, constraint: finiteConstraint });

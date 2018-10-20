@@ -36,7 +36,6 @@ function allMessages(errors?: ValidationResultMessages<any>): string[] {
   return flatMapDeep(childMessages, allMessages);
 }
 
-
 export class ValidationResult<T> {
   constructor(protected errors?: T) {}
 

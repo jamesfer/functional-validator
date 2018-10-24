@@ -1,4 +1,13 @@
-import * as indexExports from './index-exports';
+import * as rules from './rules';
+import * as groups from './groups';
 
-export default indexExports;
-export * from './index-exports';
+export * from './rules';
+export * from './groups';
+export * from './make-constraint';
+export * from './validate';
+export * from './validation-result';
+
+export {
+  rules,
+  groups,
+};

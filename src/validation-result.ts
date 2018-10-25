@@ -1,12 +1,12 @@
 import { ValidationResultMessages } from './validate';
-import { isArray, isEmpty, isString } from 'lodash-es';
+import { isEmpty, isString } from 'lodash-es';
 
 function firstMessage(errors?: ValidationResultMessages<any>): string | undefined {
   if (errors === undefined) {
     return undefined;
   }
 
-  if (isArray(errors)) {
+  if (Array.isArray(errors)) {
     return errors[0];
   }
 
@@ -28,7 +28,7 @@ function allMessages(errors?: ValidationResultMessages<any>): string[] {
     return [];
   }
 
-  if (isArray(errors)) {
+  if (Array.isArray(errors)) {
     return errors;
   }
 

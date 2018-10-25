@@ -1,62 +1,69 @@
 import { maxLength, string } from '../rules';
 import { validate } from '../validate';
 import { hasElements } from './has-elements';
+import pMapSeries = require('p-map-series');
 
 const rules = [string(), maxLength(10)];
 
+function validateEach(values: any, constraints = rules) {
+  return pMapSeries(values, async value => (await validate(value, constraints)).all());
+}
+
 describe('hasElements', () => {
-  it('should pass null and undefined', () => {
-    expect(validate(null, hasElements(rules)).passed()).toBe(true);
-    expect(validate(undefined, hasElements(rules)).passed()).toBe(true);
+  it('should pass null and undefined', async () => {
+    expect((await validate(null, hasElements(rules))).passed()).toBe(true);
+    expect((await validate(undefined, hasElements(rules))).passed()).toBe(true);
   });
 
-  it('should an array of results', () => {
+  it('should return an array of results', async () => {
     const values = [1, 2];
-    const messages = validate(values, hasElements(rules)).all();
-    expect(messages).toEqual(values.map(value => validate(value, rules).all()));
+    const result = await validate(values, hasElements(rules));
+    const expectedMessages = await validateEach(values);
+    expect(result.all()).toEqual(expectedMessages);
   });
 
-  it('should validate each object individually', () => {
+  it('should validate each object individually', async () => {
     const values = ['hello', 5, 'world'];
-    const messages = validate(values, hasElements(rules)).all();
-    expect(messages).toEqual(values.map(value => validate(value, rules).all()));
+    const result = await validate(values, hasElements(rules));
+    const expectedMessages = await validateEach(values);
+    expect(result.all()).toEqual(expectedMessages);
   });
 
-  it('should work on all array like objects', () => {
+  it('should work on all array like objects', async () => {
     const string = 'hello';
-    let messages = validate(string, hasElements(rules)).all();
-    expect(messages).toEqual(Array.from(string).map(value => validate(value, rules).all()));
+    let result = await validate(string, hasElements(rules));
+    expect(result.all()).toEqual(await validateEach(Array.from(string)));
 
     const object = { 1: 'h', 2: 'i', length: 2 };
-    messages = validate(object, hasElements(rules)).all();
-    expect(messages).toEqual(Array.from(object).map(value => validate(value, rules).all()));
+    result = await validate(object, hasElements(rules));
+    expect(result.all()).toEqual(await validateEach(Array.from(object)));
   });
 
-  it('should correctly pass the key option', () => {
+  it('should correctly pass the key option', async () => {
     const constraint = jest.fn(() => undefined);
     const parent = ['a', 'b', 'c'];
-    validate(parent, hasElements([constraint]));
+    await validate(parent, hasElements([constraint]));
     parent.forEach((value, index) => {
       const options = expect.objectContaining({ key: `${index}` });
       expect(constraint).nthCalledWith(index + 1, value, options);
     });
   });
 
-  it('should correctly pass the key path option', () => {
+  it('should correctly pass the key path option', async () => {
     const constraint = jest.fn(() => undefined);
     const parent = ['a', 'b', 'c'];
-    validate(parent, hasElements([constraint]));
+    await validate(parent, hasElements([constraint]));
     parent.forEach((value, index) => {
       const options = expect.objectContaining({ keyPath: [`${index}`] });
       expect(constraint).nthCalledWith(index + 1, value, options);
     });
   });
 
-  it('should correctly pass the key path option when nested', () => {
+  it('should correctly pass the key path option when nested', async () => {
     const constraint = jest.fn(() => undefined);
     const child = ['a', 'b', 'c'];
     const parent = [child, child, child];
-    validate(parent, hasElements(hasElements([constraint])));
+    await validate(parent, hasElements(hasElements([constraint])));
     parent.forEach((_, parentIndex) => {
       child.forEach((value, childIndex) => {
         const index = parentIndex * child.length + childIndex;
@@ -66,10 +73,10 @@ describe('hasElements', () => {
     });
   });
 
-  it('should correctly pass the parent option', () => {
+  it('should correctly pass the parent option', async () => {
     const constraint = jest.fn(() => undefined);
     const parent = ['a', 'b', 'c'];
-    validate(parent, hasElements([constraint]));
+    await validate(parent, hasElements([constraint]));
     parent.forEach((value, index) => {
       const options = expect.objectContaining({ parent });
       expect(constraint).nthCalledWith(index + 1, value, options);

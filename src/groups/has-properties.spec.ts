@@ -1,26 +1,26 @@
 import { validate } from '../validate';
 import { hasProperties } from './has-properties';
 import { greaterThan, required, string } from '../rules';
-import { assertType, Dictionary, returns } from '../type-assertions';
+import { assertType, Dictionary, returns } from '../utils';
 import { mapValues } from 'lodash-es';
 
 describe('object', () => {
   const requiredString = [required(), string()];
 
-  it('should return messages in order', () => {
+  it('should return messages in order', async () => {
     const test = { firstName: 1 };
     const rules = { firstName: [string(), greaterThan(2)] };
-    const result = validate(test, hasProperties(rules));
+    const result = await validate(test, hasProperties(rules));
     const messages = result.flattened();
     expect(messages).toHaveLength(2);
     expect(messages[0]).toMatch(/must be a string/);
     expect(messages[1]).toMatch(/must be greater than/);
   });
 
-  it('should not return properties that have passed validation', () => {
+  it('should not return properties that have passed validation', async () => {
     const test = { firstName: 'tim' };
     const rules = { firstName: requiredString, lastName: requiredString };
-    const result = validate(test, hasProperties(rules)).all();
+    const result = (await validate(test, hasProperties(rules))).all();
     if (result) {
       expect(result.firstName).toBe(undefined);
       expect(result.hasOwnProperty('firstName')).toBe(false);
@@ -28,10 +28,10 @@ describe('object', () => {
     }
   });
 
-  it('should retain the shape of the input in the message object', () => {
+  it('should retain the shape of the input in the message object', async () => {
     const test = { firstName: 'tim' };
     const rules = { firstName: requiredString, lastName: requiredString };
-    const result = validate(test, hasProperties(rules)).all();
+    const result = (await validate(test, hasProperties(rules))).all();
     if (result) {
       assertType<string[] | undefined>(result.firstName);
       assertType<typeof result.firstName>(returns<string[] | undefined>());
@@ -41,11 +41,11 @@ describe('object', () => {
     }
   });
 
-  it('should retain the shape of child objects of the input in the message object', () => {
+  it('should retain the shape of child objects of the input in the message object', async () => {
     const test = { parent: { firstName: 'tim' } };
-    const result = validate(test, hasProperties({
+    const result = (await validate(test, hasProperties({
       parent: hasProperties({ firstName: requiredString }),
-    })).all();
+    }))).all();
 
     if (result) {
       assertType<{ parent?: { firstName?: string[] } }>(result);
@@ -63,8 +63,8 @@ describe('object', () => {
     }
   });
 
-  it('should work', () => {
-    const result = validate(
+  it('should work', async () => {
+    const result = await validate(
       { firstName: 'tim' },
       hasProperties({
         firstName: [required()],
@@ -78,32 +78,32 @@ describe('object', () => {
     expect(messages[0]).toMatch(/required/);
   });
 
-  it('should correctly pass the key option', () => {
+  it('should correctly pass the key option', async () => {
     const constraint = jest.fn(() => undefined);
     const parent: Dictionary<number> = { a: 1, b: 2 };
-    validate(parent, hasProperties(mapValues(parent, () => constraint)));
+    await validate(parent, hasProperties(mapValues(parent, () => constraint)));
     Object.keys(parent).forEach((key, index) => {
       const options = expect.objectContaining({ key });
       expect(constraint).nthCalledWith(index + 1, parent[key], options);
     });
   });
 
-  it('should correctly pass the key path option', () => {
+  it('should correctly pass the key path option', async () => {
     const constraint = jest.fn(() => undefined);
     const parent: Dictionary<number> = { a: 1, b: 2 };
-    validate(parent, hasProperties(mapValues(parent, () => constraint)));
+    await validate(parent, hasProperties(mapValues(parent, () => constraint)));
     Object.keys(parent).forEach((key, index) => {
       const options = expect.objectContaining({ keyPath: [key] });
       expect(constraint).nthCalledWith(index + 1, parent[key], options);
     });
   });
 
-  it('should correctly pass the key path option when nested', () => {
+  it('should correctly pass the key path option when nested', async () => {
     const constraint = jest.fn(() => undefined);
     const child: Dictionary<number> = { a: 1, b: 2 };
     const parent: Dictionary<Dictionary<number>> = { c: child, d: child };
     const childConstraints = hasProperties(mapValues(child, () => constraint));
-    validate(parent, hasProperties(mapValues(parent, () => childConstraints)));
+    await validate(parent, hasProperties(mapValues(parent, () => childConstraints)));
     Object.keys(parent).forEach((parentKey, parentIndex) => {
       Object.keys(child).forEach((childKey, childIndex) => {
         const index = parentIndex * Object.keys(child).length + childIndex;
@@ -113,10 +113,10 @@ describe('object', () => {
     });
   });
 
-  it('should correctly pass the parent option', () => {
+  it('should correctly pass the parent option', async () => {
     const constraint = jest.fn(() => undefined);
     const parent: Dictionary<number> = { a: 1, b: 2 };
-    validate(parent, hasProperties(mapValues(parent, () => constraint)));
+    await validate(parent, hasProperties(mapValues(parent, () => constraint)));
     Object.keys(parent).forEach((key, index) => {
       const options = expect.objectContaining({ parent });
       expect(constraint).nthCalledWith(index + 1, parent[key], options);

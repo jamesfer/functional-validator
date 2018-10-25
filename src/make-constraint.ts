@@ -1,9 +1,14 @@
 import { isFunction } from 'lodash-es';
+import { castPromise, MaybePromise } from './utils';
 
 /**
  * A rule message function is a way to create dynamic messages based on the user's input.
  */
-export type RuleMessageFn<P = void> = (value: any, options: ConstraintOptions, params: P) => string;
+export type RuleMessageFn<P = void> = (
+  value: any,
+  options: ConstraintOptions,
+  params: P,
+) => string;
 
 /**
  * A rule's message can be a simple string, or a function that accepts the extra options that
@@ -31,12 +36,19 @@ export interface GlobalOptions<P = void> {
 /**
  * A constraint is a single check run against the data to confirm that it is valid.
  */
-export type Constraint<P = void> = (value: any, options: ConstraintOptions, params: P) => boolean;
+export type Constraint<P = void> = (
+  value: any,
+  options: ConstraintOptions,
+  params: P,
+) => MaybePromise<boolean>;
 
 /**
  * Validation function that returns multiple messages
  */
-export type GroupConstraint<T> = (value: any, options: ConstraintOptions) => T | undefined;
+export type GroupConstraint<T> = (
+  value: any,
+  options: ConstraintOptions,
+) => MaybePromise<T | undefined>;
 
 /**
  * An internal constraint the function that is actually run by the validator. It usually wraps a
@@ -69,9 +81,9 @@ export function makeConstraint<P>({ message, constraint, params }: {
   constraint: Constraint<P>,
   params?: P,
 }): InternalConstraint {
-  return (value, constraintOptions) => {
-    return !constraint(value, constraintOptions, params as P)
-      ? produceMessage(message, value, constraintOptions, params as P)
-      : undefined;
-  };
+  return (value, constraintOptions) => (
+    castPromise(constraint(value, constraintOptions, params as P))
+      .then(passed => passed ? undefined
+        : produceMessage(message, value, constraintOptions, params as P))
+  );
 }

@@ -5,14 +5,14 @@ import { greaterThan, string } from './rules';
 // Maybe just the options.
 describe.skip('validate', () => {
   describe('array of constraints', () => {
-    it('should validate correct input', () => {
-      const result = validate(7, [greaterThan(5)]);
+    it('should validate correct input', async () => {
+      const result = await validate(7, [greaterThan(5)]);
       expect(result.passed());
       expect(result.flattened()).toEqual([]);
     });
 
-    it('should validate incorrect input', () => {
-      const result = validate(3, [greaterThan(5)]);
+    it('should validate incorrect input', async () => {
+      const result = await validate(3, [greaterThan(5)]);
       expect(result.failed());
 
       const messages = result.flattened();
@@ -20,8 +20,8 @@ describe.skip('validate', () => {
       expect(messages[0]).toMatch(/must be greater than/);
     });
 
-    it('should return messages in order', () => {
-      const result = validate(3, [string(), greaterThan(5)]);
+    it('should return messages in order', async () => {
+      const result = await validate(3, [string(), greaterThan(5)]);
 
       expect(result.failed());
 

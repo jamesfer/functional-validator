@@ -16,7 +16,8 @@
     "build": "yarn build:declaration && yarn build:rollup",
     "build:declaration": "tsc --project tsconfig.build.json --outDir dist/typings --declaration --emitDeclarationOnly",
     "build:rollup": "rollup --config",
-    "validate": "yarn lint && yarn test && yarn build"
+    "visualize": "rollup --config --config-visualize",
+    "validate": "yarn lint && yarn test -i && yarn build"
   },
   "config": {
     "commitizen": {
@@ -92,6 +93,7 @@
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-typescript": "^1.0.0",
     "rollup-plugin-uglify": "^6.0.0",
+    "rollup-plugin-visualizer": "^0.9.2",
     "semantic-release": "^15.9.16",
     "ts-jest": "^23.10.4",
     "ts-node": "^7.0.1",

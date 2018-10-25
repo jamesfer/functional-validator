@@ -1,5 +1,5 @@
 import { ValidationResultMessages } from './validate';
-import { isArray, isEmpty, flatMapDeep, isString } from 'lodash-es';
+import { isArray, isEmpty, isString } from 'lodash-es';
 
 function firstMessage(errors?: ValidationResultMessages<any>): string | undefined {
   if (errors === undefined) {
@@ -33,7 +33,7 @@ function allMessages(errors?: ValidationResultMessages<any>): string[] {
   }
 
   const childMessages = Object.values(errors) as ValidationResultMessages<any>[];
-  return flatMapDeep(childMessages, allMessages);
+  return ([] as string[]).concat(...childMessages.map(allMessages));
 }
 
 export class ValidationResult<T> {

@@ -1,4 +1,5 @@
 import pMap from 'p-map';
+import arrayFrom from 'array-from';
 import { isArrayLike } from 'lodash-es';
 import { InternalConstraint, GroupConstraint, ConstraintOptions } from '../make-constraint';
 import { runConstraints } from '../validate';
@@ -13,7 +14,7 @@ export function hasElements<T = string[]>(
 
     const childOptions: ConstraintOptions = { ...options, parent: values };
     // Need to use Array.from to support all array like objects
-    return pMap(Array.from(values), (value, index) => {
+    return pMap(arrayFrom(values), (value, index) => {
       const key = index.toString();
       return runConstraints(value, constraints, {
         ...childOptions,

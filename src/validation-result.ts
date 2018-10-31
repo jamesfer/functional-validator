@@ -1,12 +1,12 @@
 import { ValidationResultMessages } from './validate';
-import { isArray, isEmpty, flatMapDeep, isString } from 'lodash-es';
+import { isEmpty, isString } from 'lodash-es';
 
 function firstMessage(errors?: ValidationResultMessages<any>): string | undefined {
   if (errors === undefined) {
     return undefined;
   }
 
-  if (isArray(errors)) {
+  if (Array.isArray(errors)) {
     return errors[0];
   }
 
@@ -28,12 +28,12 @@ function allMessages(errors?: ValidationResultMessages<any>): string[] {
     return [];
   }
 
-  if (isArray(errors)) {
+  if (Array.isArray(errors)) {
     return errors;
   }
 
   const childMessages = Object.values(errors) as ValidationResultMessages<any>[];
-  return flatMapDeep(childMessages, allMessages);
+  return ([] as string[]).concat(...childMessages.map(allMessages));
 }
 
 export class ValidationResult<T> {

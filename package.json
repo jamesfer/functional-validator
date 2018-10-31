@@ -4,6 +4,7 @@
   "description": "Simple, adaptable, type-safe validator",
   "author": "James Ferguson",
   "license": "MIT",
+  "repository": "github:jamesfer/functional-validator",
   "main": "dist/umd.js",
   "browser": "dist/umd.min.js",
   "module": "dist/esm5.js",
@@ -80,7 +81,6 @@
     "tslib": "^1.8.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@semantic-release/changelog": "^3.0.0",
     "@semantic-release/git": "^7.0.4",

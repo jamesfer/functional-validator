@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/jamesfer/functional-validator/compare/v1.0.0...v2.0.0) (2018-11-01)
+
+
+### Bug Fixes
+
+* remove library default export ([b4f693d](https://github.com/jamesfer/functional-validator/commit/b4f693d))
+
+
+### BREAKING CHANGES
+
+* The package no longer provides a default export.
+
 # 1.0.0 (2018-10-21)
 
 

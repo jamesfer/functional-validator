@@ -32,7 +32,15 @@ export default ({ 'config-visualize': visualize }) => {
       plugins: [
         resolve(),
         commonjs(),
-        typescript({ target, tsconfig: 'tsconfig.build.json' }),
+        typescript({
+          target,
+          tsconfig: 'tsconfig.build.json',
+          include: [
+            'src/**',
+            'node_modules/lodash-es',
+            'node_modules/p-*/**',
+          ],
+        }),
         babel({ extensions: ['.ts'] }),
       ].concat(
         minify ? uglify() : [],

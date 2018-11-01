@@ -2,52 +2,52 @@ import { defined, notNull, required } from './presence';
 import { validate } from '../validate';
 
 describe('required', () => {
-  const test = (value: any) => validate(value, [required()]).passed();
+  const test = async (value: any) => (await validate(value, [required()])).passed();
 
-  it('should fail null and undefined', () => {
-    expect(test(null)).toBe(false);
-    expect(test(undefined)).toBe(false);
+  it('should fail null and undefined', async () => {
+    expect(await test(null)).toBe(false);
+    expect(await test(undefined)).toBe(false);
   });
 
-  it('should pass all other values', () => {
-    expect(test('')).toBe(true);
-    expect(test(false)).toBe(true);
-    expect(test(0)).toBe(true);
-    expect(test({})).toBe(true);
-    expect(test([])).toBe(true);
+  it('should pass all other values', async () => {
+    expect(await test('')).toBe(true);
+    expect(await test(false)).toBe(true);
+    expect(await test(0)).toBe(true);
+    expect(await test({})).toBe(true);
+    expect(await test([])).toBe(true);
   });
 });
 
 describe('notNull', () => {
-  const test = (value: any) => validate(value, [notNull()]).passed();
+  const test = async (value: any) => (await validate(value, [notNull()])).passed();
 
-  it('should fail null', () => {
-    expect(test(null)).toBe(false);
+  it('should fail null', async () => {
+    expect(await test(null)).toBe(false);
   });
 
-  it('should pass all other values', () => {
-    expect(test(undefined)).toBe(true);
-    expect(test('')).toBe(true);
-    expect(test(false)).toBe(true);
-    expect(test(0)).toBe(true);
-    expect(test({})).toBe(true);
-    expect(test([])).toBe(true);
+  it('should pass all other values', async () => {
+    expect(await test(undefined)).toBe(true);
+    expect(await test('')).toBe(true);
+    expect(await test(false)).toBe(true);
+    expect(await test(0)).toBe(true);
+    expect(await test({})).toBe(true);
+    expect(await test([])).toBe(true);
   });
 });
 
 describe('defined', () => {
-  const test = (value: any) => validate(value, [defined()]).passed();
+  const test = async (value: any) => (await validate(value, [defined()])).passed();
 
-  it('should fail undefined', () => {
-    expect(test(undefined)).toBe(false);
+  it('should fail undefined', async () => {
+    expect(await test(undefined)).toBe(false);
   });
 
-  it('should pass all other values', () => {
-    expect(test(null)).toBe(true);
-    expect(test('')).toBe(true);
-    expect(test(false)).toBe(true);
-    expect(test(0)).toBe(true);
-    expect(test({})).toBe(true);
-    expect(test([])).toBe(true);
+  it('should pass all other values', async () => {
+    expect(await test(null)).toBe(true);
+    expect(await test('')).toBe(true);
+    expect(await test(false)).toBe(true);
+    expect(await test(0)).toBe(true);
+    expect(await test({})).toBe(true);
+    expect(await test([])).toBe(true);
   });
 });

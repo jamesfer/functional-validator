@@ -1,57 +1,46 @@
+import pMap from 'p-map';
+import { isUndefined, omitBy, zipObject } from 'lodash-es';
 import { ObjectMessageMap, ObjectValidatorMap, runConstraints } from '../validate';
-import { ConstraintOptions } from '../make-constraint';
-import { Dictionary } from '../type-assertions';
+import { ConstraintOptions, GroupConstraint } from '../make-constraint';
+import { Dictionary } from '../utils';
 
-function runPropertyConstraints<T extends ObjectValidatorMap<any>>(
-  resultMap: ObjectMessageMap<T>,
-  name: string,
+function runPropertyConstraint<T extends ObjectValidatorMap<any>>(
   value: any,
-  constraints: any,
+  constraints: T,
   options: ConstraintOptions,
-): boolean {
-  const result = runConstraints(value, constraints, options);
-  if (result !== undefined) {
-    resultMap[name] = result as any;
-    return false;
-  }
-  return true;
+): (key: string) => Promise<any> {
+  return (key) => {
+    const propertyOptions = {
+      ...options,
+      key,
+      keyPath: [...options.keyPath, key],
+      parent: value,
+    };
+    return runConstraints(value[key], constraints[key], propertyOptions);
+  };
 }
 
 function runObjectConstraints<T extends ObjectValidatorMap<any>>(
-  constraints: T,
   value: Dictionary<any>,
+  constraints: T,
   options: ConstraintOptions,
-): ObjectMessageMap<T> | undefined {
-  let allConstraintsPassed = true;
-  const resultMap = Object.keys(constraints).reduce<ObjectMessageMap<T>>(
-    (resultMap, key) => {
-      const propertyOptions = {
-        ...options,
-        key,
-        keyPath: [...options.keyPath, key],
-        parent: value,
-      };
-
-      const result = runConstraints(value[key], constraints[key], propertyOptions);
-      if (result !== undefined) {
-        resultMap[key] = result as any;
-        allConstraintsPassed = false;
-      }
-
-      return resultMap;
-    },
-    {},
-  );
-  return allConstraintsPassed ? undefined : resultMap;
+): Promise<ObjectMessageMap<T> | undefined> {
+  const keys = Object.keys(constraints);
+  return pMap(keys, runPropertyConstraint(value, constraints, options))
+    .then(results => (
+      results.every(isUndefined)
+        ? undefined
+        : omitBy(zipObject(keys, results), isUndefined) as ObjectMessageMap<T>
+    ));
 }
 
 export function hasProperties<T extends ObjectValidatorMap<any>>(
   constraints: T,
-): (...args: any[]) => ObjectMessageMap<T> | undefined {
-  return (value: any, options: ConstraintOptions): ObjectMessageMap<T> | undefined => {
+): GroupConstraint<ObjectMessageMap<T> | undefined> {
+  return (value: any, options: ConstraintOptions) => {
     if (value === null || typeof value !== 'object') {
-      return undefined;
+      return Promise.resolve(undefined);
     }
-    return runObjectConstraints(constraints, value, options);
+    return runObjectConstraints(value, constraints, options);
   };
 }

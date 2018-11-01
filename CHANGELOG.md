@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/jamesfer/functional-validator/compare/v3.0.0...v3.0.1) (2018-11-01)
+
+
+### Bug Fixes
+
+* fix main file in package.json ([e468a38](https://github.com/jamesfer/functional-validator/commit/e468a38))
+
 # [3.0.0](https://github.com/jamesfer/functional-validator/compare/v2.0.0...v3.0.0) (2018-11-01)
 
 

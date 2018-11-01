@@ -26,8 +26,6 @@ export default ({ 'config-visualize': visualize }) => {
         sourcemap: true,
         // Name of global variable when using with a script tag
         name: 'fv',
-        // Skip default export when not using esm
-        exports: 'named',
         // Skip emitting interop helper function
         interop: false,
       },

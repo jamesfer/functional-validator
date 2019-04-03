@@ -77,7 +77,7 @@
     "date-fns": "^2.0.0-0",
     "lodash-es": "^4.17.11",
     "p-map": "^2.0.0",
-    "p-map-series": "^1.0.0",
+    "p-map-series": "^2.1.0",
     "tslib": "^1.8.3"
   },
   "devDependencies": {

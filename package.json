@@ -78,7 +78,7 @@
     "lodash-es": "^4.17.11",
     "p-map": "^2.0.0",
     "p-map-series": "^1.0.0",
-    "tslib": "^1.8.3"
+    "tslib": "^1.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
